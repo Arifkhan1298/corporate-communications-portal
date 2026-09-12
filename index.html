@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-density="normal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CORVANTA — World-class Corporate Communications Portal. Connect People. Align Teams. Move Business Forward.">
+  <meta name="theme-color" content="#07261d">
+  <title>CORVANTA — Corporate Communications Portal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. AUTHENTICATION / LOGIN SCREEN
+       ========================================================================= -->
+  <div id="authScreen" class="auth-container">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="brand-badge">
+          <svg class="brand-badge-icon" viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <span style="color: var(--gold-400); font-size: 0.8rem; font-weight: 700; letter-spacing: 1px;">ENTERPRISE SUITE</span>
+        </div>
+        <h1 class="brand-title">CORVANTA</h1>
+        <p class="brand-tagline">"Connect People. Align Teams. Move Business Forward."</p>
+      </div>
+
+      <form id="authLoginForm" class="auth-form" onsubmit="event.preventDefault(); window.CorvantaApp.loginWithCredentials();">
+        <div class="form-group">
+          <label class="form-label" for="loginEmail">Work Email</label>
+          <input type="email" id="loginEmail" class="form-input" placeholder="alexandra.vance@corvanta.com" value="alexandra.vance@corvanta.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">
+            <span>Password</span>
+            <a href="javascript:void(0)" onclick="window.CorvantaApp.showToast('Password reset link sent to demo email.', 'info')">Forgot Password?</a>
+          </label>
+          <input type="password" id="loginPassword" class="form-input" placeholder="••••••••••••" value="Enterprise2026!" required>
+        </div>
+
+        <div class="form-row-check">
+          <label class="checkbox-label">
+            <input type="checkbox" id="rememberMe" checked>
+            <span>Remember this device</span>
+          </label>
+          <span style="font-size: 0.78rem; color: var(--emerald-400);">● SSO Verified</span>
+        </div>
+
+        <div class="auth-actions">
+          <button type="submit" id="btnSignIn" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Sign In to Workspace
+          </button>
+          
+          <div class="auth-divider">OR</div>
+
+          <button type="button" id="btnDemoWorkspace" class="btn btn-emerald" onclick="window.CorvantaApp.enterDemoWorkspace()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Enter Demo Workspace (Instant Access)
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       2. APPLICATION SHELL
+       ========================================================================= -->
+  <div id="appShell" class="app-shell" style="display: none;">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <aside id="appSidebar" class="app-sidebar">
+      <div class="sidebar-header">
+        <a href="#overview" class="sidebar-brand" onclick="window.CorvantaApp.navigateTo('overview')">
+          <div class="sidebar-logo-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div>
+            <div class="sidebar-brand-name">CORVANTA</div>
+            <div class="sidebar-brand-subtitle">Corporate Comms</div>
+          </div>
+        </a>
+        <button class="btn-icon" id="sidebarCollapseBtn" onclick="window.CorvantaApp.toggleSidebarCollapse()" title="Toggle Sidebar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav-container" id="sidebarNav">
+        <div class="sidebar-nav-group-title">Executive & Core</div>
+        
+        <button class="sidebar-nav-item active" data-view="overview" onclick="window.CorvantaApp.navigateTo('overview')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Overview</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="announcements" onclick="window.CorvantaApp.navigateTo('announcements')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+          <span>Announcements</span>
+          <span class="nav-badge badge-gold" id="badgeAnnounceCount">128</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="messages" onclick="window.CorvantaApp.navigateTo('messages')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Messages</span>
+          <span class="nav-badge badge-emerald" id="badgeMessageCount">4</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="newsroom" onclick="window.CorvantaApp.navigateTo('newsroom')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+          <span>Newsroom</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="departments" onclick="window.CorvantaApp.navigateTo('departments')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          <span>Departments</span>
+          <span class="nav-badge">10</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="employees" onclick="window.CorvantaApp.navigateTo('employees')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Employees</span>
+        </button>
+
+        <div class="sidebar-nav-group-title">Campaigns & Operations</div>
+
+        <button class="sidebar-nav-item" data-view="campaigns" onclick="window.CorvantaApp.navigateTo('campaigns')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Campaigns</span>
+          <span class="nav-badge badge-gold">14 Active</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="calendar" onclick="window.CorvantaApp.navigateTo('calendar')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Calendar</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="documents" onclick="window.CorvantaApp.navigateTo('documents')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>Documents</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="events" onclick="window.CorvantaApp.navigateTo('events')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2v4M18 2v4M2 10h20M2 14h20M2 18h20M7 22v-4M17 22v-4"/></svg>
+          <span>Events</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="feedback" onclick="window.CorvantaApp.navigateTo('feedback')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <span>Feedback</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="tasks" onclick="window.CorvantaApp.navigateTo('tasks')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>Tasks</span>
+        </button>
+
+        <div class="sidebar-nav-group-title">Analytics & Intelligence</div>
+
+        <button class="sidebar-nav-item" data-view="analytics" onclick="window.CorvantaApp.navigateTo('analytics')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>Analytics</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="reports" onclick="window.CorvantaApp.navigateTo('reports')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>Reports</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="notifications" onclick="window.CorvantaApp.navigateTo('notifications')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span>Notifications</span>
+          <span class="nav-badge badge-gold" id="sidebarNotifBadge">5</span>
+        </button>
+
+        <button class="sidebar-nav-item" data-view="settings" onclick="window.CorvantaApp.navigateTo('settings')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user-pill" onclick="window.CorvantaApp.openProfileModal()">
+          <div class="avatar avatar-sm">
+            AV
+            <div class="avatar-status-dot"></div>
+          </div>
+          <div class="user-pill-info">
+            <div class="user-pill-name">Alexandra Vance</div>
+            <div class="user-pill-role">Chief Comms Officer</div>
+          </div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="app-main">
+      
+      <!-- TOP NAVIGATION BAR -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle-btn" id="mobileSidebarToggle" onclick="window.CorvantaApp.toggleMobileSidebar()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+
+          <div class="topbar-search-box" onclick="window.CorvantaApp.openSearchModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="topbar-search-input" placeholder="Search announcements, employees, campaigns, documents..." readonly>
+            <span class="search-shortcut-hint">Ctrl + K</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="company-selector" onclick="window.CorvantaApp.cycleCompanyContext()">
+            <div class="company-dot"></div>
+            <span id="currentCompanyLabel">CORVANTA Global Corp</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+
+          <button class="btn btn-outline-gold btn-sm" onclick="window.CorvantaApp.openQuickCreateModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Quick Create</span>
+          </button>
+
+          <button class="btn-icon topbar-icon-badge-btn" onclick="window.CorvantaApp.navigateTo('messages')" title="Messages">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="notification-count-badge">4</span>
+          </button>
+
+          <button class="btn-icon topbar-icon-badge-btn" onclick="window.CorvantaApp.navigateTo('notifications')" title="Notifications">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notification-count-badge" id="topbarNotifBadge">5</span>
+          </button>
+
+          <button class="btn-icon" onclick="window.CorvantaApp.openHelpModal()" title="Help & System Info">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </button>
+
+          <div class="avatar avatar-sm" onclick="window.CorvantaApp.openProfileModal()" style="cursor: pointer;" title="User Profile">
+            AV
+            <div class="avatar-status-dot"></div>
+          </div>
+        </div>
+      </header>
+
+      <!-- VIEW SECTIONS CONTAINER -->
+      <main class="app-content">
+        
+        <!-- 1. OVERVIEW DASHBOARD -->
+        <section id="view-overview" class="view-section active">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Corporate Communications</h1>
+              <p>Keep your organization informed, connected and aligned.</p>
+            </div>
+            <div class="view-header-actions">
+              <div class="date-filter-group" id="overviewDateFilter">
+                <button class="date-filter-btn" data-range="today" onclick="window.CorvantaApp.setOverviewDateFilter('today')">Today</button>
+                <button class="date-filter-btn" data-range="7d" onclick="window.CorvantaApp.setOverviewDateFilter('7d')">7 Days</button>
+                <button class="date-filter-btn active" data-range="30d" onclick="window.CorvantaApp.setOverviewDateFilter('30d')">30 Days</button>
+                <button class="date-filter-btn" data-range="90d" onclick="window.CorvantaApp.setOverviewDateFilter('90d')">90 Days</button>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="window.CorvantaApp.openCreateAnnouncementForm()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                New Announcement
+              </button>
+            </div>
+          </div>
+
+          <!-- 8 KPI CARDS -->
+          <div class="kpi-grid" id="overviewKpiGrid">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- EXECUTIVE SPOTLIGHT CARD -->
+          <div class="exec-hero-card" id="executiveSpotlightCard">
+            <div class="exec-portrait">ES</div>
+            <div class="exec-details">
+              <div class="badge badge-important" style="margin-bottom: 8px;">Executive Address</div>
+              <div class="exec-quote">"As we expand our global presence, transparent communication is our foundational engine. Every team member drives our collective momentum."</div>
+              <div class="exec-author-title">Elena Sterling — Chief Executive Officer</div>
+              <div class="exec-author-sub">Quarterly Strategic Direction • Published Today at 09:00 AM • 98.4% Organization Reach</div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <button class="btn btn-outline-gold btn-sm" onclick="window.CorvantaApp.openExecutiveReader()">Read Keynote</button>
+              <button class="btn btn-outline btn-sm" onclick="window.CorvantaApp.shareItem('Executive Address: Elena Sterling')">Share</button>
+            </div>
+          </div>
+
+          <!-- CHARTS & SUMMARY ROW -->
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                  <span>Communication Reach & Engagement Trends</span>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);" id="reachChartSubtext">Last 30 Days Target: >90%</span>
+              </div>
+              <div class="card-body">
+                <div class="chart-container">
+                  <canvas id="canvasReachTrend" class="chart-canvas"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 10 10 0 0 0 10-10"/></svg>
+                  <span>Channel Engagement Mix</span>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart-container">
+                  <canvas id="canvasChannelDonut" class="chart-canvas"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RECENT ANNOUNCEMENTS & EVENTS ROW -->
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 18-5v12L3 14v-3z"/></svg>
+                  <span>Latest High-Priority Announcements</span>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="window.CorvantaApp.navigateTo('announcements')">View All</button>
+              </div>
+              <div class="card-body" id="overviewAnnouncementsList" style="display: flex; flex-direction: column; gap: 14px;">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <span>Upcoming Global Events</span>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="window.CorvantaApp.navigateTo('events')">Calendar</button>
+              </div>
+              <div class="card-body" id="overviewEventsList" style="display: flex; flex-direction: column; gap: 14px;">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. ANNOUNCEMENTS -->
+        <section id="view-announcements" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Company Announcements</h1>
+              <p>Broadcast critical updates, executive memos, and departmental notices.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary" onclick="window.CorvantaApp.openCreateAnnouncementForm()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Create Announcement
+              </button>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <input type="text" id="announcementSearchInput" class="form-input" style="width: 240px; padding: 8px 12px;" placeholder="Search announcements..." oninput="window.CorvantaApp.filterAnnouncements()">
+              
+              <select id="announcementCategoryFilter" class="filter-select" onchange="window.CorvantaApp.filterAnnouncements()">
+                <option value="all">All Categories</option>
+                <option value="Company News">Company News</option>
+                <option value="Executive Update">Executive Update</option>
+                <option value="HR">HR</option>
+                <option value="Finance">Finance</option>
+                <option value="Technology">Technology</option>
+                <option value="Operations">Operations</option>
+                <option value="Culture">Culture</option>
+                <option value="Security">Security</option>
+                <option value="Events">Events</option>
+              </select>
+
+              <select id="announcementPriorityFilter" class="filter-select" onchange="window.CorvantaApp.filterAnnouncements()">
+                <option value="all">All Priorities</option>
+                <option value="Normal">Normal</option>
+                <option value="Important">Important</option>
+                <option value="Urgent">Urgent</option>
+              </select>
+
+              <select id="announcementStatusFilter" class="filter-select" onchange="window.CorvantaApp.filterAnnouncements()">
+                <option value="all">All Statuses</option>
+                <option value="Published">Published</option>
+                <option value="Scheduled">Scheduled</option>
+                <option value="Draft">Draft</option>
+                <option value="Archived">Archived</option>
+              </select>
+            </div>
+            <div class="toolbar-right">
+              <span id="announcementCountDisplay" style="font-size: 0.84rem; color: var(--text-muted);">Showing 12 announcements</span>
+            </div>
+          </div>
+
+          <div class="grid-cards" id="announcementsContainer">
+            <!-- Dynamic announcement cards rendered by JS -->
+          </div>
+        </section>
+
+        <!-- 3. CREATE ANNOUNCEMENT FORM VIEW -->
+        <section id="view-create-announcement" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1 id="announcementEditorHeader">New Corporate Announcement</h1>
+              <p>Publish an official communication across regional branches and departments.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-outline" onclick="window.CorvantaApp.navigateTo('announcements')">Cancel</button>
+            </div>
+          </div>
+
+          <div class="card" style="max-width: 900px; margin: 0 auto;">
+            <div class="card-body">
+              <form id="announcementForm" onsubmit="event.preventDefault(); window.CorvantaApp.saveAnnouncement('Published');">
+                <input type="hidden" id="editAnnouncementId" value="">
+                
+                <div class="form-group" style="margin-bottom: 18px;">
+                  <label class="form-label" for="annTitle">Title *</label>
+                  <input type="text" id="annTitle" class="form-input" placeholder="e.g., Q3 Strategic Vision & EMEA Expansion Milestones" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 18px;">
+                  <label class="form-label" for="annSummary">Executive Summary (Short teaser) *</label>
+                  <input type="text" id="annSummary" class="form-input" placeholder="Brief 1-2 sentence preview for employee notifications and digests" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 18px;">
+                  <label class="form-label" for="annContent">Full Content *</label>
+                  <textarea id="annContent" class="form-input" rows="8" placeholder="Provide full context, strategic initiatives, executive quotes, and action items..." required></textarea>
+                </div>
+
+                <div class="grid-2col" style="margin-bottom: 18px;">
+                  <div class="form-group">
+                    <label class="form-label" for="annCategory">Category</label>
+                    <select id="annCategory" class="filter-select">
+                      <option value="Company News">Company News</option>
+                      <option value="Executive Update">Executive Update</option>
+                      <option value="HR">HR</option>
+                      <option value="Finance">Finance</option>
+                      <option value="Technology">Technology</option>
+                      <option value="Operations">Operations</option>
+                      <option value="Culture">Culture</option>
+                      <option value="Security">Security</option>
+                      <option value="Events">Events</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="annDepartment">Department</label>
+                    <select id="annDepartment" class="filter-select">
+                      <option value="All Departments">All Departments</option>
+                      <option value="Executive">Executive</option>
+                      <option value="Marketing">Marketing</option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Finance">Finance</option>
+                      <option value="HR">HR</option>
+                      <option value="Sales">Sales</option>
+                      <option value="Operations">Operations</option>
+                      <option value="IT">IT</option>
+                      <option value="Legal">Legal</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="grid-3col" style="margin-bottom: 24px;">
+                  <div class="form-group">
+                    <label class="form-label" for="annAudience">Target Audience</label>
+                    <select id="annAudience" class="filter-select">
+                      <option value="All Employees (Global)">All Employees (Global)</option>
+                      <option value="Executive Leadership">Executive Leadership</option>
+                      <option value="Department Managers">Department Managers</option>
+                      <option value="Regional Office: EMEA">Regional Office: EMEA</option>
+                      <option value="Regional Office: APAC">Regional Office: APAC</option>
+                      <option value="North America Hub">North America Hub</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="annPriority">Priority</label>
+                    <select id="annPriority" class="filter-select">
+                      <option value="Normal">Normal</option>
+                      <option value="Important">Important</option>
+                      <option value="Urgent">Urgent</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="annPublishDate">Publish / Schedule Date</label>
+                    <input type="date" id="annPublishDate" class="form-input">
+                  </div>
+                </div>
+
+                <div class="card-footer" style="background: transparent; padding: 0;">
+                  <button type="button" class="btn btn-outline" onclick="window.CorvantaApp.saveAnnouncement('Draft')">Save as Draft</button>
+                  <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn btn-outline-gold" onclick="window.CorvantaApp.saveAnnouncement('Scheduled')">Schedule Publication</button>
+                    <button type="submit" class="btn btn-primary">Publish Now</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. MESSAGES -->
+        <section id="view-messages" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Internal Corporate Messaging</h1>
+              <p>Direct communication channels across leadership, project groups, and departments.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-outline-gold btn-sm" onclick="window.CorvantaApp.openNewConversationModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                New Conversation
+              </button>
+            </div>
+          </div>
+
+          <div class="messaging-shell">
+            <div class="chat-sidebar">
+              <div class="chat-sidebar-header">
+                <input type="text" id="searchChatInput" class="form-input" placeholder="Search conversations..." oninput="window.CorvantaApp.filterConversations()">
+              </div>
+              <div class="chat-contact-list" id="chatContactList">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <div class="chat-main">
+              <div class="chat-main-header">
+                <div class="chat-header-user">
+                  <div class="avatar avatar-sm" id="activeChatAvatar">ES</div>
+                  <div>
+                    <div style="font-weight: 700;" id="activeChatName">Elena Sterling (CEO)</div>
+                    <div style="font-size: 0.74rem; color: var(--emerald-400);" id="activeChatStatus">● Online • Executive Office</div>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn-icon" onclick="window.CorvantaApp.archiveCurrentConversation()" title="Archive Chat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+                  </button>
+                  <button class="btn-icon" onclick="window.CorvantaApp.deleteCurrentConversation()" title="Delete Chat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="chat-message-feed" id="chatMessageFeed">
+                <!-- Chat messages rendered by JS -->
+              </div>
+
+              <form class="chat-composer" onsubmit="event.preventDefault(); window.CorvantaApp.sendChatMessage();">
+                <button type="button" class="btn-icon" onclick="window.CorvantaApp.addChatEmoji('👍')" title="Quick Reaction">👍</button>
+                <button type="button" class="btn-icon" onclick="window.CorvantaApp.showToast('File attachment simulation ready.', 'info')" title="Attach File">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                </button>
+                <input type="text" id="chatComposerInput" placeholder="Write internal memo, project update, or reply..." required autocomplete="off">
+                <button type="submit" class="btn btn-primary btn-sm">
+                  <span>Send</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. NEWSROOM -->
+        <section id="view-newsroom" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Corporate Newsroom</h1>
+              <p>Press releases, external stories, business milestones, and industry recognitions.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-outline-gold btn-sm" onclick="window.CorvantaApp.openSubmitNewsModal()">Submit News Story</button>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <input type="text" id="newsSearchInput" class="form-input" style="width: 240px; padding: 8px 12px;" placeholder="Search news & stories..." oninput="window.CorvantaApp.filterNews()">
+              <select id="newsCategoryFilter" class="filter-select" onchange="window.CorvantaApp.filterNews()">
+                <option value="all">All News Categories</option>
+                <option value="Press Releases">Press Releases</option>
+                <option value="Company Stories">Company Stories</option>
+                <option value="Milestones">Milestones</option>
+                <option value="Awards">Awards</option>
+                <option value="Product Updates">Product Updates</option>
+                <option value="Media Coverage">Media Coverage</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-cards" id="newsCardsContainer">
+            <!-- Newsroom items rendered by JS -->
+          </div>
+        </section>
+
+        <!-- 6. DEPARTMENTS -->
+        <section id="view-departments" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Department Directory & Operations</h1>
+              <p>Global organizational units, executive leadership, and communication health.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary btn-sm" onclick="window.CorvantaApp.openDepartmentModal()">Add Department</button>
+            </div>
+          </div>
+
+          <div class="grid-cards" id="departmentCardsContainer">
+            <!-- Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- 7. EMPLOYEES -->
+        <section id="view-employees" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Employee Directory</h1>
+              <p>Find colleagues, verify departmental roles, and initiate direct communication.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary btn-sm" onclick="window.CorvantaApp.openAddEmployeeModal()">Add Employee</button>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <input type="text" id="employeeSearchInput" class="form-input" style="width: 240px; padding: 8px 12px;" placeholder="Search by name, role, email..." oninput="window.CorvantaApp.filterEmployees()">
+              <select id="employeeDeptFilter" class="filter-select" onchange="window.CorvantaApp.filterEmployees()">
+                <option value="all">All Departments</option>
+                <option value="Executive">Executive</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Finance">Finance</option>
+                <option value="HR">HR</option>
+                <option value="Operations">Operations</option>
+                <option value="Legal">Legal</option>
+                <option value="IT">IT</option>
+              </select>
+              <select id="employeeStatusFilter" class="filter-select" onchange="window.CorvantaApp.filterEmployees()">
+                <option value="all">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Remote">Remote</option>
+                <option value="In Meeting">In Meeting</option>
+                <option value="On Leave">On Leave</option>
+              </select>
+            </div>
+            <div class="toolbar-right">
+              <span id="employeeCountDisplay" style="font-size: 0.84rem; color: var(--text-muted);">2,846 Global Roster Members</span>
+            </div>
+          </div>
+
+          <div class="grid-cards" id="employeeCardsContainer">
+            <!-- Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- 8. CAMPAIGNS -->
+        <section id="view-campaigns" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Communication Campaigns</h1>
+              <p>Strategize, schedule, and track multi-channel organizational rollouts.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary btn-sm" onclick="window.CorvantaApp.openCreateCampaignModal()">New Campaign</button>
+            </div>
+          </div>
+
+          <div class="grid-cards" id="campaignsContainer">
+            <!-- Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- 9. CALENDAR -->
+        <section id="view-calendar" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Corporate Communications Calendar</h1>
+              <p>Scheduled all-hands, product launches, executive updates, and governance deadlines.</p>
+            </div>
+            <div class="view-header-actions">
+              <div class="date-filter-group">
+                <button class="date-filter-btn active" id="btnCalMonthView" onclick="window.CorvantaApp.setCalendarView('month')">Month View</button>
+                <button class="date-filter-btn" id="btnCalAgendaView" onclick="window.CorvantaApp.setCalendarView('agenda')">Agenda View</button>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="window.CorvantaApp.openAddEventModal()">Add Event</button>
+            </div>
+          </div>
+
+          <div id="calendarMonthWrapper">
+            <div class="calendar-view-header">
+              <h2 id="calendarMonthTitle" style="font-size: 1.25rem; font-weight: 700; color: var(--text-gold);">September 2026</h2>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-outline btn-sm" onclick="window.CorvantaApp.prevCalendarMonth()">‹ Previous</button>
+                <button class="btn btn-outline btn-sm" onclick="window.CorvantaApp.todayCalendarMonth()">Today</button>
+                <button class="btn btn-outline btn-sm" onclick="window.CorvantaApp.nextCalendarMonth()">Next ›</button>
+              </div>
+            </div>
+
+            <div class="calendar-month-grid" id="calendarGridContainer">
+              <!-- Calendar days rendered by JS -->
+            </div>
+          </div>
+
+          <div id="calendarAgendaWrapper" style="display: none;">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Scheduled Communication Events</div>
+              </div>
+              <div class="card-body" id="calendarAgendaList" style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- Agenda items rendered by JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 10. DOCUMENTS -->
+        <section id="view-documents" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Enterprise Document Center</h1>
+              <p>Corporate policies, executive guidelines, press kits, and departmental collateral.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary btn-sm" onclick="window.CorvantaApp.openUploadDocumentModal()">Upload Document</button>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <input type="text" id="documentSearchInput" class="form-input" style="width: 240px; padding: 8px 12px;" placeholder="Search documents..." oninput="window.CorvantaApp.filterDocuments()">
+              <select id="documentCategoryFilter" class="filter-select" onchange="window.CorvantaApp.filterDocuments()">
+                <option value="all">All Document Categories</option>
+                <option value="Policies">Policies</option>
+                <option value="Announcements">Announcements</option>
+                <option value="Reports">Reports</option>
+                <option value="Guidelines">Guidelines</option>
+                <option value="HR Documents">HR Documents</option>
+                <option value="Brand Documents">Brand Documents</option>
+                <option value="Training">Training</option>
+                <option value="Company Resources">Company Resources</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Document Name</th>
+                  <th>Category</th>
+                  <th>Department</th>
+                  <th>Owner</th>
+                  <th>Last Updated</th>
+                  <th>Size</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="documentTableBody">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 11. EVENTS -->
+        <section id="view-events" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Company Events & Town Halls</h1>
+              <p>Participate in live summits, executive Q&A forums, and global team celebrations.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary btn-sm" onclick="window.CorvantaApp.openAddEventModal()">Create Event</button>
+            </div>
+          </div>
+
+          <div class="grid-cards" id="eventsContainer">
+            <!-- Event cards rendered by JS -->
+          </div>
+        </section>
+
+        <!-- 12. FEEDBACK -->
+        <section id="view-feedback" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Employee Feedback & Sentiment</h1>
+              <p>Direct channel for recommendations, workplace ideas, recognition, and operational inquiries.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary btn-sm" onclick="window.CorvantaApp.openSubmitFeedbackModal()">Submit Feedback</button>
+            </div>
+          </div>
+
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Recent Feedback Submissions</div>
+                <select id="feedbackStatusFilter" class="filter-select" onchange="window.CorvantaApp.filterFeedback()">
+                  <option value="all">All Statuses</option>
+                  <option value="New">New</option>
+                  <option value="Under Review">Under Review</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+              </div>
+              <div class="card-body" id="feedbackListContainer" style="display: flex; flex-direction: column; gap: 14px;">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Submit Organizational Feedback</div>
+              </div>
+              <div class="card-body">
+                <form id="inlineFeedbackForm" onsubmit="event.preventDefault(); window.CorvantaApp.submitFeedbackInline();">
+                  <div class="form-group" style="margin-bottom: 14px;">
+                    <label class="form-label" for="feedCategory">Category</label>
+                    <select id="feedCategory" class="filter-select" required>
+                      <option value="Suggestion">Suggestion</option>
+                      <option value="Complaint">Complaint</option>
+                      <option value="Idea">Idea</option>
+                      <option value="Recognition">Recognition</option>
+                      <option value="Question">Question</option>
+                    </select>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 14px;">
+                    <label class="form-label" for="feedSubject">Subject</label>
+                    <input type="text" id="feedSubject" class="form-input" placeholder="e.g., Cross-departmental async communication guidelines" required>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 14px;">
+                    <label class="form-label" for="feedDepartment">Department Directed To</label>
+                    <select id="feedDepartment" class="filter-select">
+                      <option value="HR">HR</option>
+                      <option value="Operations">Operations</option>
+                      <option value="Executive">Executive</option>
+                      <option value="IT">IT</option>
+                      <option value="Marketing">Marketing</option>
+                    </select>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 16px;">
+                    <label class="form-label" for="feedMessage">Message Details</label>
+                    <textarea id="feedMessage" class="form-input" rows="4" placeholder="Detail your experience, ideas, or questions with actionable feedback..." required></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-emerald" style="width: 100%;">Submit to Management</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 13. TASKS -->
+        <section id="view-tasks" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Communication Tasks & Workflows</h1>
+              <p>Manage deliverables, press releases, video briefs, and rollout checklists.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary btn-sm" onclick="window.CorvantaApp.openAddTaskModal()">Create Task</button>
+            </div>
+          </div>
+
+          <div class="kanban-board">
+            <div class="kanban-column" id="kanbanColTodo">
+              <div class="kanban-col-header">
+                <span>To Do</span>
+                <span class="nav-badge" id="countColTodo">0</span>
+              </div>
+              <div class="kanban-cards-area" id="kanbanCardsTodo" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Tasks rendered by JS -->
+              </div>
+            </div>
+
+            <div class="kanban-column" id="kanbanColInProgress">
+              <div class="kanban-col-header">
+                <span>In Progress</span>
+                <span class="nav-badge badge-gold" id="countColInProgress">0</span>
+              </div>
+              <div class="kanban-cards-area" id="kanbanCardsInProgress" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Tasks rendered by JS -->
+              </div>
+            </div>
+
+            <div class="kanban-column" id="kanbanColReview">
+              <div class="kanban-col-header">
+                <span>Under Review</span>
+                <span class="nav-badge" id="countColReview">0</span>
+              </div>
+              <div class="kanban-cards-area" id="kanbanCardsReview" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Tasks rendered by JS -->
+              </div>
+            </div>
+
+            <div class="kanban-column" id="kanbanColCompleted">
+              <div class="kanban-col-header">
+                <span>Completed</span>
+                <span class="nav-badge badge-emerald" id="countColCompleted">0</span>
+              </div>
+              <div class="kanban-cards-area" id="kanbanCardsCompleted" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Tasks rendered by JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 14. ANALYTICS -->
+        <section id="view-analytics" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Communication Analytics & Insights</h1>
+              <p>Audience reach, engagement saturation, campaign ROI, and departmental responsiveness.</p>
+            </div>
+            <div class="view-header-actions">
+              <div class="date-filter-group" id="analyticsDateFilter">
+                <button class="date-filter-btn" data-range="7d" onclick="window.CorvantaApp.setAnalyticsDateFilter('7d')">7 Days</button>
+                <button class="date-filter-btn active" data-range="30d" onclick="window.CorvantaApp.setAnalyticsDateFilter('30d')">30 Days</button>
+                <button class="date-filter-btn" data-range="90d" onclick="window.CorvantaApp.setAnalyticsDateFilter('90d')">90 Days</button>
+                <button class="date-filter-btn" data-range="1y" onclick="window.CorvantaApp.setAnalyticsDateFilter('1y')">1 Year</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ENGAGEMENT HIGHLIGHT BAR -->
+          <div class="card" style="margin-bottom: 24px;">
+            <div class="card-body" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+              <div>
+                <div style="font-size: 2.4rem; font-weight: 800; color: var(--text-gold);" id="analyticsOverallScore">87%</div>
+                <div style="font-weight: 700; font-size: 1.1rem; color: var(--text-primary);">Excellent Employee Engagement</div>
+                <div style="font-size: 0.84rem; color: var(--text-muted);">Benchmarked +14% above Fortune 500 Enterprise Communications Index</div>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; min-width: 320px;">
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px;">
+                    <span>Announcements Read</span>
+                    <strong style="color: var(--emerald-400);">94%</strong>
+                  </div>
+                  <div class="progress-bar-wrap"><div class="progress-bar-fill emerald" style="width: 94%;"></div></div>
+                </div>
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px;">
+                    <span>Messages Opened</span>
+                    <strong style="color: var(--gold-400);">88%</strong>
+                  </div>
+                  <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width: 88%;"></div></div>
+                </div>
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px;">
+                    <span>Events Attended</span>
+                    <strong style="color: var(--emerald-400);">82%</strong>
+                  </div>
+                  <div class="progress-bar-wrap"><div class="progress-bar-fill emerald" style="width: 82%;"></div></div>
+                </div>
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 4px;">
+                    <span>Feedback Participation</span>
+                    <strong style="color: var(--gold-400);">76%</strong>
+                  </div>
+                  <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width: 76%;"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Department Communication Volume</div>
+              </div>
+              <div class="card-body">
+                <div class="chart-container">
+                  <canvas id="canvasDeptBar" class="chart-canvas"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Interactive Engagement Area Trend</div>
+              </div>
+              <div class="card-body">
+                <div class="chart-container">
+                  <canvas id="canvasAreaTrend" class="chart-canvas"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 15. REPORTS -->
+        <section id="view-reports" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Executive Reports & Compliance</h1>
+              <p>Generate, preview, and download boardroom-ready communications audits.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary btn-sm" onclick="window.CorvantaApp.openGenerateReportModal()">Generate New Report</button>
+            </div>
+          </div>
+
+          <div class="grid-cards" id="reportsGridContainer">
+            <!-- Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- 16. NOTIFICATIONS -->
+        <section id="view-notifications" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Notification Center</h1>
+              <p>Real-time system alerts, broadcast messages, and employee mentions.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-outline-gold btn-sm" onclick="window.CorvantaApp.markAllNotificationsRead()">Mark All as Read</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body" id="notificationsListContainer" style="display: flex; flex-direction: column; gap: 12px;">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 17. SETTINGS -->
+        <section id="view-settings" class="view-section">
+          <div class="view-header">
+            <div class="view-title-group">
+              <h1>Enterprise Platform Settings</h1>
+              <p>Configure personal preferences, theme aesthetics, notification rules, and workspace data.</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-primary btn-sm" onclick="window.CorvantaApp.saveSettings()">Save Preferences</button>
+            </div>
+          </div>
+
+          <div class="grid-2col">
+            <div class="card">
+              <div class="card-header"><div class="card-title">Appearance & Display</div></div>
+              <div class="card-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-weight: 600;">Theme Mode</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted);">Toggle between Obsidian Graphite dark mode and Porcelain light mode</div>
+                  </div>
+                  <select id="settingThemeSelect" class="filter-select" onchange="window.CorvantaApp.toggleTheme(this.value)">
+                    <option value="dark">Obsidian Dark (Executive)</option>
+                    <option value="light">Porcelain Light</option>
+                  </select>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-weight: 600;">Display Density</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted);">Compact mode increases information density on screen</div>
+                  </div>
+                  <select id="settingDensitySelect" class="filter-select" onchange="window.CorvantaApp.toggleDensity(this.value)">
+                    <option value="normal">Normal</option>
+                    <option value="compact">Compact Density</option>
+                  </select>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-weight: 600;">Subtle Glow Animations</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted);">Enable soft gold and emerald micro-glow highlights</div>
+                  </div>
+                  <input type="checkbox" id="settingGlows" checked style="accent-color: var(--emerald-500); transform: scale(1.2);">
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header"><div class="card-title">Notification Preferences</div></div>
+              <div class="card-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-weight: 600;">Urgent Announcement Push</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted);">Receive immediate desktop notification for urgent memos</div>
+                  </div>
+                  <input type="checkbox" id="settingNotifUrgent" checked style="accent-color: var(--emerald-500); transform: scale(1.2);">
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-weight: 600;">Direct Message Alerts</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted);">Notify when team members send internal messages</div>
+                  </div>
+                  <input type="checkbox" id="settingNotifMessages" checked style="accent-color: var(--emerald-500); transform: scale(1.2);">
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-weight: 600;">Weekly Digest Email</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted);">Receive automated executive summary every Monday 8:00 AM</div>
+                  </div>
+                  <input type="checkbox" id="settingNotifDigest" checked style="accent-color: var(--emerald-500); transform: scale(1.2);">
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="grid-column: 1 / -1;">
+              <div class="card-header"><div class="card-title">Data Management & Reset</div></div>
+              <div class="card-body" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+                <div>
+                  <div style="font-weight: 600;">Reset Demo Workspace Data</div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted);">Restore all announcements, messages, calendar events, tasks, and settings to original demo state</div>
+                </div>
+                <button class="btn btn-danger btn-sm" onclick="window.CorvantaApp.resetDemoData()">Reset Demo Data</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- ENTERPRISE FOOTER -->
+      <footer class="app-footer">
+        <div class="footer-brand">
+          <div class="sidebar-logo-icon" style="width: 26px; height: 26px;">
+            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: var(--gold-500);">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div>
+            <strong style="color: var(--text-primary);">CORVANTA</strong>
+            <span style="margin-left: 8px;">"Connect People. Align Teams. Move Business Forward."</span>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <a href="javascript:void(0)" onclick="window.CorvantaApp.showToast('Corporate Privacy Policy updated 2026.', 'info')">Privacy</a>
+          <a href="javascript:void(0)" onclick="window.CorvantaApp.showToast('Terms of Enterprise Service: Compliant.', 'info')">Terms</a>
+          <a href="javascript:void(0)" onclick="window.CorvantaApp.openHelpModal()">Support</a>
+          <a href="javascript:void(0)" onclick="window.CorvantaApp.navigateTo('documents')">Documentation</a>
+          <span>© 2026 CORVANTA. All rights reserved.</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- FLOATING QUICK CREATE BUTTON -->
+  <div class="floating-quick-create" id="floatingQuickCreateBtn">
+    <button class="floating-create-btn" onclick="window.CorvantaApp.openQuickCreateModal()" title="Quick Create Item">+</button>
+  </div>
+
+  <!-- =========================================================================
+       3. MODAL SYSTEM
+       ========================================================================= -->
+  
+  <!-- GLOBAL SEARCH MODAL -->
+  <div class="modal-backdrop" id="globalSearchModal">
+    <div class="modal-dialog search-modal-dialog">
+      <div class="search-modal-input-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="globalSearchModalInput" class="search-modal-input" placeholder="Type to search across announcements, employees, documents, events..." oninput="window.CorvantaApp.performGlobalSearch()">
+        <button class="btn-icon" onclick="window.CorvantaApp.closeModal('globalSearchModal')">✕</button>
+      </div>
+      <div class="search-results-list" id="globalSearchResults">
+        <!-- Live search results rendered by JS -->
+      </div>
+      <div class="modal-footer" style="justify-content: space-between; font-size: 0.78rem; color: var(--text-muted);">
+        <span>Tip: Use ↑ ↓ to navigate and Enter to select</span>
+        <button class="btn btn-outline btn-sm" onclick="window.CorvantaApp.closeModal('globalSearchModal')">Esc to Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK CREATE MODAL -->
+  <div class="modal-backdrop" id="quickCreateModal">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Quick Create Action</span>
+        </div>
+        <button class="btn-icon" onclick="window.CorvantaApp.closeModal('quickCreateModal')">✕</button>
+      </div>
+      <div class="modal-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <button class="btn btn-outline-gold" style="padding: 16px; flex-direction: column; gap: 8px;" onclick="window.CorvantaApp.triggerQuickAction('announcement')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 18-5v12L3 14v-3z"/></svg>
+          <span>New Announcement</span>
+        </button>
+        <button class="btn btn-outline-gold" style="padding: 16px; flex-direction: column; gap: 8px;" onclick="window.CorvantaApp.triggerQuickAction('message')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>New Message</span>
+        </button>
+        <button class="btn btn-outline-gold" style="padding: 16px; flex-direction: column; gap: 8px;" onclick="window.CorvantaApp.triggerQuickAction('campaign')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>New Campaign</span>
+        </button>
+        <button class="btn btn-outline-gold" style="padding: 16px; flex-direction: column; gap: 8px;" onclick="window.CorvantaApp.triggerQuickAction('event')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>New Event</span>
+        </button>
+        <button class="btn btn-outline-gold" style="padding: 16px; flex-direction: column; gap: 8px;" onclick="window.CorvantaApp.triggerQuickAction('task')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span>New Task</span>
+        </button>
+        <button class="btn btn-outline-gold" style="padding: 16px; flex-direction: column; gap: 8px;" onclick="window.CorvantaApp.triggerQuickAction('feedback')">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <span>New Feedback</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIVERSAL ITEM DETAILS / READER MODAL -->
+  <div class="modal-backdrop" id="universalDetailModal">
+    <div class="modal-dialog" style="max-width: 680px;">
+      <div class="modal-header">
+        <div class="modal-title" id="universalModalTitle">Announcement Details</div>
+        <button class="btn-icon" onclick="window.CorvantaApp.closeModal('universalDetailModal')">✕</button>
+      </div>
+      <div class="modal-body" id="universalModalBody">
+        <!-- Content injected dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="window.CorvantaApp.closeModal('universalDetailModal')">Close</button>
+        <button class="btn btn-primary" id="universalModalActionBtn" onclick="window.CorvantaApp.closeModal('universalDetailModal')">Acknowledge</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER PROFILE MODAL -->
+  <div class="modal-backdrop" id="profileModal">
+    <div class="modal-dialog" style="max-width: 500px;">
+      <div class="modal-header">
+        <div class="modal-title">Executive Profile</div>
+        <button class="btn-icon" onclick="window.CorvantaApp.closeModal('profileModal')">✕</button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <div class="avatar avatar-lg" style="margin: 0 auto 16px auto;">AV</div>
+        <h2 style="font-size: 1.3rem;">Alexandra Vance</h2>
+        <div style="color: var(--text-gold); font-weight: 600;">Chief Communications Officer</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">Corporate Strategy & Global Public Relations • London HQ</div>
+        
+        <div style="background: var(--bg-subtle); padding: 14px; border-radius: var(--radius-md); text-align: left; font-size: 0.86rem; display: flex; flex-direction: column; gap: 8px;">
+          <div><strong>Email:</strong> alexandra.vance@corvanta.com</div>
+          <div><strong>Phone:</strong> +44 20 7946 0912</div>
+          <div><strong>Workspace:</strong> CORVANTA Global Executive Core</div>
+          <div><strong>Security Clearance:</strong> Tier 1 Sovereign Enterprise</div>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <button class="btn btn-danger btn-sm" onclick="window.CorvantaApp.logout()">Log Out</button>
+        <button class="btn btn-primary btn-sm" onclick="window.CorvantaApp.closeModal('profileModal')">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELP & ARCHITECTURE MODAL -->
+  <div class="modal-backdrop" id="helpModal">
+    <div class="modal-dialog" style="max-width: 600px;">
+      <div class="modal-header">
+        <div class="modal-title">CORVANTA Portal Architecture</div>
+        <button class="btn-icon" onclick="window.CorvantaApp.closeModal('helpModal')">✕</button>
+      </div>
+      <div class="modal-body" style="font-size: 0.9rem; line-height: 1.6;">
+        <p><strong>Brand:</strong> CORVANTA — <em>"Connect People. Align Teams. Move Business Forward."</em></p>
+        <p><strong>Architecture Standard:</strong> Performance-First Vanilla Web Application with Zero External Dependencies and strict Zero-Folder Structure.</p>
+        <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px; margin-top: 8px;">
+          <li>All assets self-contained in direct root files.</li>
+          <li>Offline-ready with LocalStorage database persistence.</li>
+          <li>Custom Canvas & SVG responsive charts for instantaneous rendering.</li>
+          <li>100% button and form interaction handling.</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="window.CorvantaApp.closeModal('helpModal')">Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- CORE SCRIPT (DIRECT ROOT) -->
+  <script src="script.js"></script>
+</body>
+</html>
